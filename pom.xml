@@ -1,0 +1,118 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<!-- this project, personalize the settings below -->
+	<groupId>CMU</groupId>
+	<artifactId>recognizer</artifactId>
+	<version>1.0</version>
+	<packaging>jar</packaging>
+	<name>CMU Linguistic Annotation Backend</name>
+	<organization>
+		<name></name>
+		<url></url>
+	</organization>
+	<description>
+		The following tasks or targets are supported:		
+		Compiling the source tree, the recognizer-api-version.jar in the lib folder is in the classpath:
+		mvn compile
+		
+		Creating a jar:
+		mvn package
+		
+		The resulting jar can be copied, in its own folder together with a recognizer.cmdi file, 
+		and maybe a documentation .html file, into the ELAN extensions folder.	
+	</description>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<!-- ELAN on Mac OS is still required to be compatible with Java 1.6 -->
+		<project.build.sourceLevel>1.6</project.build.sourceLevel>
+		<project.build.targetLevel>1.6</project.build.targetLevel>
+		<recognizer-api.version>4.0</recognizer-api.version>
+	</properties>
+	<dependencies>
+	<!-- use a system scope to add a non-repository, local jar to the classpath -->
+	    <dependency>
+		      <groupId>nl.mpi.recognizer</groupId>
+		      <artifactId>api</artifactId>
+		      <version>${recognizer-api.version}</version>
+		      <scope>system</scope>
+		      <systemPath>${project.basedir}/lib/recognizer-api-${recognizer-api.version}.jar</systemPath>
+	    </dependency>
+  	</dependencies>
+	<!-- build -->
+	<build>
+		<plugins>
+			<!-- General compiler settings (sourcelevel, targetlevel and source encoding) -->
+			<!-- default phase:compiler, goal:compile -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.0.2</version>
+				<configuration>
+					<source>${project.build.sourceLevel}</source>
+					<target>${project.build.targetLevel}</target>
+					<encoding>${project.build.sourceEncoding}</encoding>
+
+					<fork>true</fork>
+					<meminitial>32m</meminitial>
+					<maxmem>128m</maxmem>
+					<excludes>
+					</excludes>
+					<compilerArgument>-verbose</compilerArgument>
+				</configuration>
+			</plugin>
+			<!-- packaging, creating a jar -->
+			<!-- default phase:package, goal:jar -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.1</version>
+				<executions>
+          			<execution>
+          				<id>demo-jar</id>
+						<configuration>
+							<archive>
+								<index>false</index>
+								<manifest>
+									<addClasspath>false</addClasspath>
+									<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+								</manifest>
+								<manifestEntries>
+									<Built-On>${maven.build.timestamp}</Built-On>
+									<Version>${project.version}</Version>
+								</manifestEntries>
+							</archive>
+							<excludes>
+							</excludes>
+						</configuration>
+					</execution>
+        		</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<id>copy-resource-one</id>
+						<phase>install</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+
+						<configuration>
+							<outputDirectory>${basedir}/extension</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/target</directory>
+									<includes>
+										<include>*.jar</include>
+									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>	
+		</plugins>
+	</build>
+</project>

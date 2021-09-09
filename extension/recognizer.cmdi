@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMD CMDVersion="1.1" xmlns="http://www.clarin.eu/cmd/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.clarin.eu/cmd/ http://catalog.clarin.eu/ds/ComponentRegistry/rest/registry/profiles/clarin.eu:cr1:p_1430905751617/xsd">
+    <!-- See http://catalog.clarin.eu/ds/ComponentRegistry?registrySpace=published&itemId=clarin.eu:cr1:p_1430905751617 -->
+    <Header></Header>
+    <Resources>
+        <ResourceProxyList></ResourceProxyList>
+        <JournalFileProxyList></JournalFileProxyList>
+        <ResourceRelationList></ResourceRelationList>
+    </Resources>
+    <Components>
+        <RECOGNIZER>
+        	<!-- 
+        	For Recognizer API extensions the regonizerType is "direct"  
+        	The recognizer is pure Java and runs on Windows, Mac and Linux, all 3 "run" attributes should be present
+        	-->
+            <recognizer recognizerType="direct" runLinux="edu.cmu.cs.cmulab.elan.MultiRecognizer" runMac="edu.cmu.cs.cmulab.elan.MultiRecognizer" runWin="edu.cmu.cs.cmulab.elan.MultiRecognizer"
+                    info="CMU Linguistic Annotation Backend">cmulab</recognizer>
+            
+            <documentation>doc.html</documentation>
+                
+            <!--
+            In ELAN the "mimetypes" will be ignored for "direct" recognizers. The recognizer will be polled whether
+            it can handle the media files associated with the annotation document.
+            -->
+            <input level="basic" type="audio" optional="false" mimetypes="audio/x-wav"
+                info="Mono or stereo WAV to scan">source</input>
+            <!--<input level="basic" type="video" optional="false" mimetypes="video/mpg"-->
+                <!--info="Video source to scan">videosource</input>-->
+
+            <output></output>
+            <!--<output level="basic" type="tier" optional="false"-->
+                <!--mimetypes="text/xml"-->
+                <!--info="Output recognized text">output_tier</output>-->
+        </RECOGNIZER>
+    </Components>
+</CMD>
